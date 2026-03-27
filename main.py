@@ -10,7 +10,7 @@ def read_data() -> pl.LazyFrame:
 app = FastAPI()
 
 @app.get("/item/")
-def get_item(product: str| None = None, ndc: str| None = None, benchmark: Annotated[list[Literal['al-aac', 'awp','big4','fss','nadac','ia-aac']] | None, Query()] = None):
+def get_item(product: str| None = None, ndc: str| None = None, benchmark: Annotated[list[Literal['al-aac', 'mccpdc','big4','fss','nadac','ia-aac']] | None, Query()] = None):
     df = (read_data())
     if product:
         print(product)
