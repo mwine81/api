@@ -1,0 +1,14 @@
+[project]
+name = "api"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "data-manager",
+    "fastapi[standard]>=0.135.2",
+    "polars>=1.39.3",
+]
+
+[tool.uv.sources]
+data-manager = { git = "https://github.com/mwine81/data-manager.git" }
