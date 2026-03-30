@@ -1,2 +1,4 @@
 fastapi[all]
 polars
+duckdb==1.4.3
+python-dotenv

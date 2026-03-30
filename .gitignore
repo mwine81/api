@@ -11,3 +11,7 @@ wheels/
 
 create_data.py
 .env
+
+scratch.py
+
+benchmarks.db
