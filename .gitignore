@@ -15,3 +15,5 @@ create_data.py
 scratch.py
 
 benchmarks.db
+
+local_db/

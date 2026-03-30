@@ -9,16 +9,13 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-def read_data() -> pl.LazyFrame:
-    return pl.scan_parquet('data/benchmarks.parquet')
-
 app = FastAPI()
 
 def create_remote_connection():
     token = os.getenv("TOKEN_RW")
     return duckdb.connect(f"md:benchmarks?motherduck_token={token}")
 
-def read_database(database: str, product_regex: str | None = None, ndc: str | None = None, benchmark: list[str] | None = None):
+def read_database(product_regex: str | None = None, ndc: str | None = None, benchmark: list[str] | None = None):
     query = "SELECT * FROM benchmarks"
     filters = []
     params = []
@@ -44,17 +41,10 @@ def read_database(database: str, product_regex: str | None = None, ndc: str | No
 
 @app.get("/item/")
 def get_item(product: str| None = None, ndc: str| None = None, benchmark: Annotated[list[Literal['al-aac', 'mccpdc','big4','fss','nadac','ia-aac']] | None, Query()] = None):
-    df = (read_data())
-    if product:
-        print(product)
-        df = df.filter(c.product.str.contains(f'(?i){product}'))    
-    if ndc:
-        print(ndc)
-        df = df.filter(c.ndc.str.contains(f'(?i){ndc}'))
-    if benchmark:
-        print(benchmark)
-        df = df.filter(c.benchmark.is_in(benchmark))
+    data = read_database(product_regex=product, ndc=ndc, benchmark=benchmark)
     
-    return df.collect(engine='streaming').to_dicts()
-
+    return data.to_dicts()
+if __name__ == "__main__":
+    pass
+    # read_database(product_regex='(?i)acetaminophen',ndc='0000000', benchmark=['al-aac', 'mccpdc'])
 
